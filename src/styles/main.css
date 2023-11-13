@@ -1,0 +1,11 @@
+@font-face {
+    font-family: "OpenSans";
+    src: local("OpenSans"), url("@/assets/Fonts/OpenSans/OpenSans-VariableFont_wdth,wght.ttf") format("ttf");
+}
+
+
+body {
+    background-color: #FFF6F6;
+    font-family: OpenSans, sans-serif;
+    font-size: 14px;
+}
