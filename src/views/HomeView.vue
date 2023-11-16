@@ -1,6 +1,6 @@
 <template>
   <main class="body">
-    <div class="body__title-image title-image">
+    <div class="body__title title">
       <img src="@/assets/images/main-page-background.png" alt="" class="title__image">
     </div>
     <div class="body__welcome welcome">
@@ -36,6 +36,9 @@
     &__welcome {
       margin: 20px 140px;
     }
+  }
+  .title__image{
+    width: 100%;
   }
   .welcome {
     &__title {

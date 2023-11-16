@@ -4,3 +4,8 @@ export interface IRoute {
     name: string,
     component: () => Promise<Object>,
 }
+
+export interface IUser {
+    login: string,
+    password: string
+}

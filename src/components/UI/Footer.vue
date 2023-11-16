@@ -11,10 +11,10 @@
       </p>
       <div class="follow__icons icons">
         <a href="#" class="icons__link link">
-          <img src="@/assets/icons/instagram.png" alt="" class="link__icon">
+          <img src="../../assets/icons/socials/instagram.png" alt="" class="link__icon">
         </a>
         <a href="#" class="icons__link link">
-          <img src="@/assets/icons/facebook.png" alt="" class="link__icon">
+          <img src="../../assets/icons/socials/facebook.png" alt="" class="link__icon">
         </a>
       </div>
     </div>
@@ -31,8 +31,7 @@
 
 <style lang="scss">
  .footer{
-   position: absolute;
-   bottom: 0;
+   margin-top: auto;
    width: 100%;
    display: flex;
    justify-content: space-between;

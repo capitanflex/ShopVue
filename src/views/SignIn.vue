@@ -2,7 +2,7 @@
   <div class="container">
     <div class="container__login login">
       <p class="login__title">Registration</p>
-      <form action="" class="login__form form" @submit.prevent="SignIn">
+      <form action="" class="login__form form" @submit.prevent="signIn">
         <div class="form__section-input section-input">
           <p class="section-input__text">Username or email address</p>
           <input
@@ -48,7 +48,7 @@ import {reactive, ref} from "vue";
   import LogInPopup from "@/components/UI/LogInPopup.vue";
 import {useUserStore} from "@/stores/usersStore";
 
-  let popupMessage = 'The form contains errors';
+  const popupMessage = ref('The form contains errors');
   const isHidden = ref(true);
   const hasPasswordError = ref(false);
   const userStore = useUserStore();
@@ -82,14 +82,19 @@ import {useUserStore} from "@/stores/usersStore";
     hasPasswordError.value = false;
   }
 
-  async function registerAndAuthorise() {
-    await userStore.addUserToken(form.login)
+  function registerAndAuthorise() {
+    const user = {
+      login: form.login,
+      password: form.password
+    }
+    userStore.registerUser(user)
+    // console.log(user)
   }
 </script>
 
 <style lang="scss" scoped>
   .container{
-    max-width: 763px;
+    width: 763px;
     margin: auto;
   }
 
@@ -116,6 +121,12 @@ import {useUserStore} from "@/stores/usersStore";
       border-radius: 5px;
       display: block;
       margin: 0 auto;
+      &:hover{
+        background-color: #a6161d;
+      }
+      &:active{
+        background-color: #620d0d;
+      }
     }
   }
 

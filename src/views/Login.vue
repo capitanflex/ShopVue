@@ -2,7 +2,7 @@
   <div class="container">
     <div class="container__login login">
       <p class="login__title">Login</p>
-      <form action="" class="login__form form" @submit.prevent="Autorizate">
+      <form action="" class="login__form form" @submit.prevent="authorise">
         <div class="form__section-input section-input">
           <p class="section-input__text">Username or email address</p>
           <input
@@ -30,20 +30,45 @@
       </form>
     </div>
   </div>
-  <LogInPopup />
+  <LogInPopup
+      @closePopup='closePopup'
+      :is-hidden="isHidden"
+  >
+    {{ popupMessage}}
+  </LogInPopup>
 </template>
 
 <script setup lang="ts">
   import {reactive} from "vue";
   import LogInPopup from "@/components/UI/LogInPopup.vue";
+  import {ref} from "vue";
+  import {useUserStore} from "@/stores/usersStore";
 
+  const popupMessage = ref('The form contains errors');
+  const isHidden = ref(true);
+  const hasPasswordError = ref(false);
+  const userStore = useUserStore();
   const form = reactive({
     login: '',
     password: ''
   });
 
-  function Autorizate() {
-    console.log("check")
+  function authorise() {
+    const user = {
+      login : form.login,
+      password : form.password,
+
+    }
+    userStore.authoriseUser(user);
+  }
+
+  function openPopup(){
+    isHidden.value = false;
+    hasPasswordError.value = true;
+  }
+
+  function closePopup(){
+    isHidden.value  = true;
   }
 </script>
 

@@ -8,7 +8,6 @@ export class PostService{
                     _limit: 4
                 }
             });
-            console.log(response.data)
             return response.data;
 
         }

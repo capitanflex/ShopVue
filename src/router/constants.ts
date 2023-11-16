@@ -1,5 +1,6 @@
 import type {IRoute} from './interfaces'
-import {computed} from "vue";
+import {ref} from "vue";
+import {useUserStore} from "@/stores/usersStore";
 
 export const HOME_VIEW: IRoute = {
     id: 0,
@@ -7,8 +8,15 @@ export const HOME_VIEW: IRoute = {
     name: 'home',
     component: () => import('@/views/HomeView.vue')
 }
+export const LOG_IN : IRoute = {
+    id: 5,
+    path: '/login',
+    name: 'log in',
+    component: () => import('@/views/Login.vue')
+}
 
-const AUTH_ROUTES: IRoute[] = [
+
+export const AUTH_ROUTES: IRoute[] = [
     {
         id: 3,
         path: '/products',
@@ -32,15 +40,9 @@ const AUTH_ROUTES: IRoute[] = [
         path: '/contact',
         name: 'contact',
         component: () => import('@/views/ContactUs.vue')
-    },
-    {
-        id: 5,
-        path: '/login',
-        name: 'log out',
-        component: () => import('@/views/Login.vue')
-    },
+    }
 ];
-const PUBLIC_ROUTES: IRoute[]  = [
+export const PUBLIC_ROUTES: IRoute[]  = [
     {
         id: 3,
         path: '/products',
@@ -66,5 +68,5 @@ const PUBLIC_ROUTES: IRoute[]  = [
         component: () => import('@/views/SignIn.vue')
     },
 ];
-const userAuth = false;
-export const ROUTES = userAuth? AUTH_ROUTES : PUBLIC_ROUTES;
+
+

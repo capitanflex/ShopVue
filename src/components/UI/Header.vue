@@ -15,7 +15,7 @@
           class="navbar__auth"
       >
         <p
-            v-for="item in ROUTES"
+            v-for="item in userAuth ? AUTH_ROUTES : PUBLIC_ROUTES"
             :key="item.id"
             @click="redirect(item.path)"
             class="navbar__item"
@@ -23,28 +23,47 @@
         >
           {{ item.name }}
         </p>
+        <p
+            v-if="userAuth"
+            @click="unAuthorise"
+            class="navbar__item"
+        >
+          log out
+        </p>
+        <p
+            v-else
+            @click="redirect('/login')"
+            class="navbar__item"
+            :class="{ 'navbar__item_active': currentRoute === '/login' }"
+        >
+          log in
+        </p>
       </div>
-
     </nav>
-
-
   </header>
 </template>
 
 <script setup lang="ts">
-  import { ROUTES } from "@/router/constants";
-
+  import {AUTH_ROUTES, PUBLIC_ROUTES} from "@/router/constants";
   import {useRoute, useRouter} from 'vue-router';
-  import {ref} from "vue";
-  import router from "@/router";
+  import {ref, watchEffect} from "vue";
+  import {useUserStore} from "@/stores/usersStore";
 
   const route = useRoute();
   const currentRoute = ref(route.path);
-
-
+  const userStore = useUserStore();
+  const userAuth = ref(userStore.userAuth)
   const routerUse = useRouter();
+
+  watchEffect(() => {
+    userAuth.value = userStore.userAuth;
+  });
+
+  const unAuthorise = (() => {
+    userStore.unAuthoriseUser();
+  })
+
   const redirect = (path: string) => {
-    console.log(path)
     routerUse.push(path)
     currentRoute.value = path;
 
@@ -67,6 +86,7 @@
       width: 400px;
       display: flex;
       justify-content: space-between;
+      margin: 0 20px
     }
     &__navbar{
 
