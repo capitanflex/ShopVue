@@ -2,7 +2,10 @@
 
   <div class="app">
     <NavBar />
-    <RouterView />
+      <Suspense>
+          <RouterView />
+      </Suspense>
+
     <Footer />
   </div>
 
@@ -15,7 +18,7 @@ import Footer from "@/components/UI/Footer.vue";
 import {useUserStore} from "@/stores/usersStore";
 
 const userStore = useUserStore();
-userStore.checkUserAuth();
+
 
 </script>
 

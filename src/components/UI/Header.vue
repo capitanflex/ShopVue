@@ -15,6 +15,12 @@
           class="navbar__auth"
       >
         <p
+            class="navbar__item products"
+            @mouseover="showMenu"
+        >
+            products
+        </p>
+        <p
             v-for="item in userAuth ? AUTH_ROUTES : PUBLIC_ROUTES"
             :key="item.id"
             @click="redirect(item.path)"
@@ -41,6 +47,13 @@
       </div>
     </nav>
   </header>
+    <ProductsMenu
+        class="products-menu"
+        :class="{'active': isMenuVisible}"
+        @mouseleave="hideMenu"
+        @routeClick="routeClicked"
+
+    />
 </template>
 
 <script setup lang="ts">
@@ -48,12 +61,21 @@
   import {useRoute, useRouter} from 'vue-router';
   import {ref, watchEffect} from "vue";
   import {useUserStore} from "@/stores/usersStore";
+  import ProductsMenu from "@/components/UI/ProductsMenu.vue";
 
   const route = useRoute();
   const currentRoute = ref(route.path);
   const userStore = useUserStore();
   const userAuth = ref(userStore.userAuth)
   const routerUse = useRouter();
+  const isMenuVisible = ref(false);
+  function showMenu() {
+    isMenuVisible.value = true
+  }
+  const hideMenu = () => {
+      isMenuVisible.value = false;
+
+  };
 
   watchEffect(() => {
     userAuth.value = userStore.userAuth;
@@ -66,13 +88,17 @@
   const redirect = (path: string) => {
     routerUse.push(path)
     currentRoute.value = path;
-
   }
+
+  const routeClicked = () => {
+      isMenuVisible.value = false;
+  };
 
 </script>
 
 <style lang="scss">
   .header {
+    z-index: 15;
     display: flex;
     justify-content: space-between;
     padding: 23px 60px 20px 50px;
@@ -130,6 +156,19 @@
         cursor: pointer;
         color: #E31D27;
       }
+    }
+  }
+  .products-menu{
+    position: absolute;
+    z-index: 10;
+    right: 0;
+    left: 0;
+    top: -330px;
+    transition-duration: 0.5s;
+    transition-property: transform;
+    &.active {
+        transform: translateY(455px);
+        transition-timing-function: ease;
     }
   }
 </style>

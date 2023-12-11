@@ -1,42 +1,36 @@
-import {ref, watch, watchEffect} from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type {IUser} from "@/router/interfaces";
-import {useRouter} from "vue-router";
+import type { IUser } from "@/router/interfaces";
+import { useRouter } from "vue-router";
 
 export const useUserStore
     = defineStore('userStore', () => {
     const userAuth = ref(false);
     const usersTokens = ref([]);
-    const usersOnLocalStorage = localStorage.getItem("users")
+    const usersOnLocalStorage = JSON.parse(localStorage.getItem("users")) || [];
     const routerUse = useRouter();
-    console.log(usersOnLocalStorage)
     if (usersOnLocalStorage){
         usersTokens.value.push(usersOnLocalStorage)
-        console.log(usersTokens.value)
     }
 
 
     const registerUser = (token : IUser) => {
         addUserToken(token);
-        checkUserAuth();
         authoriseUser(token);
-        console.log(userAuth.value)
     }
 
     const authoriseUser = (token : IUser) => {
-        // usersTokens.value.forEach((element : IUser) =>{
-        //     console.log(element.login)
-        //     if (element.login === token.login && element.password === token.password){
-        //         userAuth.value = true;
-        //         routerUse.push('/')
-        //     }
-        // })
-        userAuth.value = true;
+        usersTokens.value.forEach((element : IUser) =>{
+
+            if (element.login === token.login && element.password === token.password){
+                userAuth.value = true;
+                routerUse.push('/')
+            }
+        })
     }
     const unAuthoriseUser = () => {
         userAuth.value = false;
-        // localStorage.clear();
-        console.log(userAuth.value)
+        // localStorage.clear()
     }
      const addUserToken = (token : IUser) => {
         usersTokens.value.push(token)
@@ -44,20 +38,28 @@ export const useUserStore
     }
 
     const deleteUserToken = (token : IUser) => {
-        usersTokens.value.pop(token)
+        const index = usersTokens.value.findIndex((element : IUser) =>
+            element.login === token.login && element.password === token.password);
+        if (index !== -1) {
+            usersTokens.value.splice(index, 1);
+            localStorage.setItem("users", JSON.stringify(usersTokens.value));
+        }
     }
 
     const checkUserAuth = () => {
-        console.log(usersOnLocalStorage)
-        if (usersOnLocalStorage != null && usersOnLocalStorage.length > 0){
-            authoriseUser();
-            console.log(usersOnLocalStorage)
+        if (usersTokens.value.length > 0) {
+            userAuth.value = true;
         }
-
     }
 
+    const checkUser = (token: IUser) => {
+        return usersTokens.value.some((element: IUser) => {
+            return element.login === token.login && element.password === token.password;
+        });
+    };
 
 
+    checkUserAuth();
 
-    return { userAuth, registerUser,authoriseUser, unAuthoriseUser, usersTokens, usersOnLocalStorage,  addUserToken, deleteUserToken, checkUserAuth}
+    return { userAuth, registerUser,authoriseUser, unAuthoriseUser, usersTokens, usersOnLocalStorage,  addUserToken, deleteUserToken, checkUser}
 })

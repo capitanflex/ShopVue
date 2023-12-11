@@ -8,6 +8,7 @@
           <input
               type="text"
               class="section-input__input"
+              :class="{'with-error': hasLoginError}"
               v-model="form.login"
           >
         </div>
@@ -16,6 +17,7 @@
           <input
               type="password"
               class="section-input__input"
+              :class="{'with-error': hasLoginError}"
               v-model="form.password"
           >
         </div>
@@ -44,9 +46,9 @@
   import {ref} from "vue";
   import {useUserStore} from "@/stores/usersStore";
 
-  const popupMessage = ref('The form contains errors');
+  const popupMessage = ref('Login or password was not found');
   const isHidden = ref(true);
-  const hasPasswordError = ref(false);
+  const hasLoginError = ref(false);
   const userStore = useUserStore();
   const form = reactive({
     login: '',
@@ -57,14 +59,21 @@
     const user = {
       login : form.login,
       password : form.password,
-
     }
-    userStore.authoriseUser(user);
+    console.log(userStore.checkUser(user))
+    if (userStore.checkUser(user)) {
+
+      userStore.authoriseUser(user);
+    }
+    else {
+      openPopup()
+    }
+
   }
 
   function openPopup(){
     isHidden.value = false;
-    hasPasswordError.value = true;
+    hasLoginError.value = true;
   }
 
   function closePopup(){
@@ -74,7 +83,7 @@
 
 <style lang="scss" scoped>
   .container{
-    max-width: 763px;
+    width: 763px;
     margin: auto;
   }
 
@@ -101,6 +110,12 @@
       border-radius: 5px;
       display: block;
       margin: 0 auto;
+      &:hover{
+        background-color: #a6161d;
+      }
+      &:active{
+        background-color: #620d0d;
+      }
     }
   }
 
@@ -137,5 +152,9 @@
       font-size: 18px;
       margin: auto 0;
     }
+  }
+
+  .with-error{
+    border: #E31D27 solid 2px;
   }
 </style>

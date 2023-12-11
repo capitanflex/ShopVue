@@ -1,6 +1,5 @@
 <template>
   <div class="welcome__posts posts">
-
       <Post
           :key='post.id'
           v-for="post in posts"

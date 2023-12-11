@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 import {reactive, ref} from "vue";
-  import LogInPopup from "@/components/UI/LogInPopup.vue";
+import LogInPopup from "@/components/UI/LogInPopup.vue";
 import {useUserStore} from "@/stores/usersStore";
 
   const popupMessage = ref('The form contains errors');

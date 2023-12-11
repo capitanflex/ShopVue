@@ -1,6 +1,4 @@
 import type {IRoute} from './interfaces'
-import {ref} from "vue";
-import {useUserStore} from "@/stores/usersStore";
 
 export const HOME_VIEW: IRoute = {
     id: 0,
@@ -15,14 +13,22 @@ export const LOG_IN : IRoute = {
     component: () => import('@/views/Login.vue')
 }
 
+export const PRODUCT_CATEGORY : IRoute = {
+    id: 9,
+    path: '/category/:id',
+    name: 'category',
+    component: () => import('@/views/Category.vue')
+}
+
+export const SUB_CATEGORY : IRoute = {
+    id: 10,
+    path: '/sub-category/:id',
+    name: 'sub category',
+    component: () => import('@/views/SubCategory.vue')
+}
+
 
 export const AUTH_ROUTES: IRoute[] = [
-    {
-        id: 3,
-        path: '/products',
-        name: 'products',
-        component: () => import('@/views/Products.vue')
-    },
     {
         id: 6,
         path: '/tool-box',
@@ -43,12 +49,6 @@ export const AUTH_ROUTES: IRoute[] = [
     }
 ];
 export const PUBLIC_ROUTES: IRoute[]  = [
-    {
-        id: 3,
-        path: '/products',
-        name: 'products',
-        component: () => import('@/views/Products.vue')
-    },
     {
         id: 4,
         path: '/contact',
